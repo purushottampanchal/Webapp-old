@@ -1,0 +1,326 @@
+﻿@using Newtonsoft.Json
+@model WebApp.Models.ProfileModel;
+
+
+@{
+    ViewData["Title"] = "Profile";
+}
+
+<link rel="stylesheet" href="~/scss/profilePage.css" />
+
+
+
+<div class="container p-0 h-100 bg-white" style="margin-top: 7rem;">
+
+    @*Name Card*@
+    <div class="row g-0">
+        <div class="col-4">
+            <img src="https://images.assetsdelivery.com/compings_v2/gmast3r/gmast3r1511/gmast3r151100776.jpg">
+        </div>
+        <div class="col-8">
+            <div class=" justify-content-between align-items-center p-5 bg-dark text-white" style="height: 75%">
+                <h3 class="display-5">
+                    @Model.user.Name
+                </h3>
+
+                <h5 class="display-6">
+                    <span class="material-symbols-outlined">
+                        assignment_ind
+                    </span>  @Model.user.UserName
+                </h5>
+            </div>
+            <div class="p-3 bg-black text-white" style="height: 25%">
+                <h6 class="d-flex"> <span class="material-symbols-outlined">mail</span>  @Model.user.Email</h6>
+                <h6 class="d-flex">  <span class="material-symbols-outlined">call</span> @Model.user.PhoneNumber</h6>
+            </div>
+
+        </div>
+    </div>
+
+
+    @*Address Cards*@
+
+
+    <div class="row g-0">
+        <h4 class="m-3 ">
+            Addresses
+
+            <span id="AddAddress" data-bs-toggle="modal" data-bs-target="#AddAddressModal" data-hover="add Address" class="material-symbols-outlined">
+                add_box
+            </span>
+        </h4>'
+         @if (Model.addresses.Count == 0)
+        {
+            <h6 class="m-5">No saved Addresses</h6>
+        }
+        else
+
+        @foreach (var add in Model.addresses)
+        {
+            <div class="card p-3 m-3 rounded text-dark stats">
+                <div class="d-flex align-items-center">
+                    <div class="ml-3 w-100">
+                        <div class="d-flex justify-content-between">
+                            <h4 class="mb-0 mt-0">@add.HouseNo,</h4>
+                            <span id="AddAddress" data-bs-toggle="modal" data-bs-target="#ConfirmDelete-@add.Id" class="material-symbols-outlined">
+                                delete
+                            </span>
+                        </div>
+
+                        <div class="p-2 mt-2">
+                            <span>@add.StreetArea,</span>
+                            <span>@add.City,</span>
+                            <span>@add.Pincode,</span>
+                            <span>@add.State,</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        }
+
+    </div>
+
+
+
+
+
+    <div class="row g-0">
+        <h4 class="m-3 ">
+            Saved Cards
+
+            <span data-bs-toggle="modal" data-bs-target="#AddCardModal" class="material-symbols-outlined">
+                add_box
+            </span>
+        </h4>
+
+        @if (Model.cards.Count == 0)
+        {
+            <h6 class="m-5">No saved cards</h6>
+        }
+        else
+
+            @foreach (var add in Model.cards)
+            {
+                <div class="card p-3 m-3 rounded text-dark stats">
+                    <div class="d-flex align-items-center">
+                        <div class="ml-3 w-100">
+                            <div class="d-flex justify-content-between">
+                                <h4 class="mb-0 mt-0">@add.NameOnCard</h4>
+                                <span id="AddAddress" data-bs-toggle="modal" data-bs-target="#ConfirmDelete-@add.Id" class="material-symbols-outlined">
+                                    delete
+                                </span>
+
+                            </div>
+                            <div class="p-2 mt-2">
+                                <span>@add.CardNo,</span>
+                                <span>@add.CVV,</span>
+                                <span>@add.Expiration,</span>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            }
+
+    </div>
+</div>
+
+<div class="modal fade" id="AddAddressModal" tabindex="-1">
+
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    Add New Address
+                </h5>
+                <input type="button" class="btn-close" data-bs-dismiss="modal" />
+            </div>
+
+            @using (Html.BeginForm("AddAddress", "Home", FormMethod.Post))
+            {
+                <div class="modal-body">
+
+                    <div class="input-group mb-3">
+                        <span class="input-group-text"><i class="fas fa-home"></i></span>
+                        <input type="text" required id="houseNo" name="HouseNo" class="form-control" placeholder="House No">
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <span class="input-group-text"> <i class="fas fa-archway"></i></span>
+                        <input type="text" required id="street" name="Street" class="form-control" placeholder="Street/area Name">
+                    </div>
+
+                    <div class="row g-0 w-100 p-0" style="margin-left: 0px !important; margin-right: 0px !important;">
+                        <div class="col-6">
+                            <div class="input-group mb-3">
+                                <span class="input-group-text"><i class="fas fa-city"></i></span>
+                                <input type="text" required id="city" name="City" class="form-control" placeholder="City">
+                            </div>
+                        </div>
+                        <div class="col-5 ml-3" style="margin-left: 36px;">
+                            <div class="input-group mb-3">
+                                <span class="input-group-text"> <i class="fas fa-map-pin"></i></span>
+                                <input type="text" id="pin" required class="form-control" name="Zip" placeholder="Zip Code" pattern="[0-9]{6}" maxlength="6">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <label class="input-group-text" for="stateSelect">State</label>
+                        <select class="form-select" name="state" id="stateSelect">
+                            <option value="Maharashtra" selected>Maharashtra</option>
+                            <option value="Goa">Goa</option>
+                            <option value="Madhya Pradesh">Madhya Pradesh</option>
+                            <option value="Gujrat">Gujrat</option>
+                        </select>
+                    </div>
+
+
+                </div>
+                <div class="modal-footer justify-content-start">
+                    <input type="submit" class="btn btn-primary" value="Save Address" />
+                </div>
+            }
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<div class="modal fade" id="AddCardModal" tabindex="-1">
+
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    Add New Card
+                </h5>
+                <input type="button" class="btn-close" data-bs-dismiss="modal" />
+            </div>
+
+            @using (Html.BeginForm("AddCard", "Home", FormMethod.Post))
+            {
+                <div class="modal-body">
+                    <div class="input-group mb-3">
+                        <label class="input-group-text" for="CardNo">Card Number</label>
+                        <input type="text" maxlength="19" required id="CardNo" name="CardNo" class="form-control" placeholder="xxxx xxxx xxxx">
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <label class="input-group-text" for="NameOnCard">Name on Card</label>
+                        <input type="text" required id="NameOnCard" name="NameOnCard" class="form-control" placeholder="Alice Bob">
+                    </div>
+
+                    <div class="row g-0 w-100 justify-content-between p-0" style="margin-left: 0px !important; margin-right: 0px !important;">
+                        <div class="col-5">
+                            <div class="input-group mb-3">
+                                <label class="input-group-text" for="cvv">Cvv</label>
+                                <input type="text" maxlength="3" required id="cvv" name="cvv" class="form-control" placeholder="xxx">
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="input-group mb-3">
+                                <label class="input-group-text" for="Expiration">Expiration</label>
+                                <input type="text" required maxlength="5" id="Expiration" name="Expiration" class="form-control" placeholder="mm/yy">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer justify-content-start">
+                    <input type="submit" class="btn btn-primary" value="Save Card" />
+                </div>
+            }
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+@foreach (var c in Model.cards)
+{
+    <div class="modal fade" id="ConfirmDelete-@c.Id" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        Delete Card @c.CardNo;
+                    </h5>
+                    <input type="button" class="btn-close" data-bs-dismiss="modal" />
+                </div>
+                <div class="modal-footer justify-content-start">
+
+
+                    <a asp-action="DeleteCard" asp-route-id="@c.Id" class="btn btn-danger">
+                        Delete
+                    </a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@foreach (var address in Model.addresses)
+{
+    <div class="modal fade" id="ConfirmDelete-@address.Id" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        Delete address @JsonConvert.SerializeObject(address);
+                    </h5>
+                    <input type="button" class="btn-close" data-bs-dismiss="modal" />
+                </div>
+                <div class="modal-footer justify-content-start">
+
+
+                    <a asp-action="DeleteAddress" asp-route-id="@address.Id" class="btn btn-danger">
+                        Delete
+                    </a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+
+<script>
+
+
+    $('#CardNo').on('keydown', function() {
+        var text = $(this).val().split(" ").join("");
+        if (text.length > 0) {
+            text = text.match(new RegExp('.{1,4}', 'g')).join(" ");
+        }
+        $(this).val(text);
+    });
+
+    $('#Expiration').on('keydown', function() {
+        var text = $(this).val().split("/").join("");
+        if (text.length > 0) {
+            text = text.match(new RegExp('.{1,2}', 'g')).join("/");
+        }
+        $(this).val(text);
+    });
+
+
+</script>

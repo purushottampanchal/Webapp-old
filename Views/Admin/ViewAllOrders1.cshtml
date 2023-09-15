@@ -1,0 +1,167 @@
+﻿@using Newtonsoft.Json
+@model IEnumerable<WebApp.Models.Order.OrderViewModel>
+
+@{
+    ViewData["Title"] = "ViewAllOrders";
+}
+
+
+<style>
+
+    .modal-dialog {
+        width: 80% !important;
+        margin: auto;
+    }
+
+</style>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserPhoneNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalCost)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ShippingChareges)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderStatus)
+            </th>
+           
+            <th>details</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Address)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserPhoneNo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalCost)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ShippingChareges)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OrderStatus)
+                </td>
+               
+                <td>
+
+                    <a class="btn btn-outline-primary open-detail-dialog" data-id="@item.Id" data-bs-toggle="modal"
+                   data-bs-target="#itemodel-@item.Id"> Details </a>
+
+                    <a class="btn btn-success">
+                        Delivered
+                    </a>
+
+                    <a class="btn btn-danger">
+                        Cancel
+                    </a>
+
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@foreach (var Order in Model)
+{
+
+
+    <div class="modal fade" id="itemodel-@Order.Id" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content p-4">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+                <h4>Remark: @Order.Remark</h4>
+
+                <table class="table">
+                    <thead>
+
+                        <tr>
+                            <th>
+                                Image
+                            </th>
+                            <th>Name</th>
+                            <th>Cost</th>
+                            <th>itemQty</th>
+                            <th>Total</th>
+                            
+                        </tr>
+
+                    </thead>
+                    <tbody>
+
+                        @foreach (var item in Order.OrderItems)
+                        {
+                            <tr>
+
+                                <td>
+                                    <img src="@item.ImageUrl" height="100px" width="100px">
+                                </td>
+                                <td>@item.Name</td>
+                                <td>@item.Cost</td>
+                                <td>@item.itemQty</td>
+                                <td>@(item.itemQty * item.Cost) </td>
+                              
+                            </tr>
+                        }
+
+
+                    </tbody>
+
+                </table>
+
+
+
+
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+}
+
+
+
+
+
+<script>
+
+</script>
+

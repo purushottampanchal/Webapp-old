@@ -1,0 +1,34 @@
+﻿[
+  {
+    "outputFile": "wwwroot/scss/LoginPage.css",
+    "inputFile": "wwwroot/scss/LoginPage.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/IndexPage.css",
+    "inputFile": "wwwroot/scss/IndexPage.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/CatlogPage.css",
+    "inputFile": "wwwroot/scss/CatlogPage.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/SingleProductPage.css",
+    "inputFile": "wwwroot/scss/SingleProductPage.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/checkoutPage.css",
+    "inputFile": "wwwroot/scss/checkoutPage.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/IndexMain.css",
+    "inputFile": "wwwroot/scss/IndexMain.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/ProfilePage.css",
+    "inputFile": "wwwroot/scss/ProfilePage.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/ConfirmOrder.css",
+    "inputFile": "wwwroot/scss/ConfirmOrder.scss"
+  }
+]

@@ -1,0 +1,287 @@
+﻿@using Newtonsoft.Json
+@using WebApp.Models.General
+@using WebApp.Models.Order
+@model CatalogItem
+@using Microsoft.AspNetCore.Http;
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor;
+
+
+@{
+    ViewData["Title"] = "View Product";
+
+}
+
+<link rel="stylesheet" href="~/scss/SingleProductPage.css" />
+
+<style>
+
+
+
+    .btn-cart:before {
+        content: "\f217";
+        font-family: "Font Awesome 5 Free"
+    }
+
+    /*button above */
+    .inline-group {
+        max-width: 9rem;
+        padding: .5rem;
+    }
+
+        .inline-group .form-control {
+            text-align: center;
+        }
+
+    .form-control[type="number"]::-webkit-inner-spin-button,
+    .form-control[type="number"]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+</style>
+
+@*@if (ViewData["msg"] != null)
+    {
+    <div class="alert alert-danger" role="alert">
+    @ViewData["msg"]
+    </div>
+    }
+
+    @if (ViewData["ErrorMessage"] != null)
+    {
+    <div class="alert alert-danger" role="alert">
+    @ViewData["ErrorMessage"]
+    </div>
+    }
+    else*@
+
+
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <div class="rounded bg-primary me-2" alt="..."></div>
+            <strong class="me-auto">eShop.com</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            Added to Cart
+        </div>
+    </div>
+</div>
+
+
+<div class="container" style="
+    margin-top: 6rem;
+    margin-bottom: 6rem;
+">
+
+    <div class="row align-items-center row-cols-2 bg-white">
+
+        <div class="col">
+
+            <img class="" src="@Model.ImageUrl" />
+
+        </div>
+        <div class="col">
+
+            <h1>@Model.Name</h1>
+
+            <h3> <span>Rs.</span> @Model.Cost </h3>
+            @*<form action="Items/PutOrder" method="post">*@
+
+            <div class="input-group inline-group">
+                <div class="input-group-prepend">
+                    <button class="btn btn-primary btn-minus">
+                        <i class="fa fa-minus"></i>
+                    </button>
+                </div>
+                <input id="ItemQty" class="form-control quantity" min="1" max="9" name="quantity" value="1" type="number">
+                <div class="input-group-append">
+                    <button class="btn btn-primary btn-plus">
+                        <i class="fa fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+
+
+            @*</form>*@
+
+            <div>
+
+
+                @*@if (HttpContextAccessor.HttpContext.Session.GetString("AuthData") == null)*@
+                @if (false)
+                {
+
+                    <div class="alert alert-danger">
+
+                        <a asp-action="Login" asp-controller="Home">Log in</a> to continue
+
+                    </div>
+
+
+                }
+                else
+                {
+                    <a href="#" id="BuyBtn" class="btn-primary buyItem btn w-25">
+                        Buy
+                    </a>
+
+                    <a href="#" class="btn-dark AddToCart btn w-25">
+                        <i class="fas fa-cart-plus"></i>   Add to cart
+                    </a>
+
+                }
+
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+@if (ViewData["itemsWithSameType"] != null)
+{
+    List<CatalogItem> itemsWithSameType = ViewData["itemsWithSameType"] as List<CatalogItem>;
+
+    @if (itemsWithSameType.Count != 0)
+    {
+        <div class="container bg-light p-1">
+
+            <h4 class="ps-3 pt-2">
+                <span class="material-symbols-outlined">
+                    expand_more
+                </span>   Similar Items
+            </h4>
+
+            @{
+
+                <div class="d-flex related-items">
+
+                    @foreach (var item in itemsWithSameType)
+                    {
+                        <a href="http://localhost:5098/Items/viewItem/@item.Id">
+
+                            <div class="card similar-product-card m-2 bg-white text-white">
+                                <img src="@item.ImageUrl" class="card-img" alt="@item.Name">
+                                <div class="card-img-overlay">
+                                    <h5 class="card-title">@item.Name</h5>
+
+                                </div>
+                            </div>
+                        </a>
+                    }
+
+
+                </div>
+
+            }
+        </div>
+
+    }
+
+}
+
+
+@if (ViewData["itemsWithSameBrand"] != null)
+{
+
+    List<CatalogItem> itemWithSameBrand = ViewData["itemsWithSameBrand"] as List<CatalogItem>;
+    if (itemWithSameBrand.Count != 0)
+    {
+
+        <div class="container bg-light mt-2 p-1">
+
+            <h4 class="ps-3 pt-2">
+                <span class="material-symbols-outlined">
+                    expand_more
+                </span>   More from same brand
+            </h4>
+
+            @{
+
+                <div class="d-flex related-items">
+
+                    @foreach (var item in itemWithSameBrand)
+                    {
+                        <a href="http://localhost:5098/Items/viewItem/@item.Id">
+
+                            <div class="card m-2 bg-white text-white similar-product-card">
+                                <img src="@item.ImageUrl" class="card-img" style="" alt="...">
+                                <div class="card-img-overlay">
+                                    <h5 class="card-title">@item.Name</h5>
+
+                                </div>
+                            </div>
+                        </a>
+                    }
+
+
+                </div>
+
+            }
+        </div>
+    }
+}
+}
+
+
+
+
+
+<script>
+
+
+        $('.btn-plus, .btn-minus').on('click', function(e) {
+          const isNegative = $(e.target).closest('.btn-minus').is('.btn-minus');
+          const input = $(e.target).closest('.input-group').find('input');
+          if (input.is('input')) {
+            input[0][isNegative ? 'stepDown' : 'stepUp']()
+          }
+        });
+
+
+
+        //add to cart
+        // $("#btn").on("click", toggleAlert);
+        //$('#bsalert').on('close.bs.alert', toggleAlert)
+
+           $(function(){
+
+                $(".AddToCart").click(function(fe){
+                    fe.preventDefault();
+                    $.post(
+                        "@Url.Action("AddItemToCart","Catalog")",
+                        {
+                            id : @Model.Id,
+                            qty : document.getElementById("ItemQty").value
+                        },
+                        function(data){
+                            //$(".alert").toggleClass('in out');
+                              $('.toast').toast('show');
+
+                            console.log("----"+data);
+
+                    });
+                });
+
+
+                 $(".buyItem").click(function(fe){
+
+                     var qty = document.getElementById("ItemQty").value
+                     var Id = @Model.Id
+                     this.href = "http://localhost:5098/Items/ConfirmOrder?id="+Id+"&qty="+qty;
+
+                });
+
+            });
+
+
+    //hover script
+
+
+
+</script>

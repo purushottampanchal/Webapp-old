@@ -1,0 +1,204 @@
+﻿/*$bg-img: "https://images.unsplash.com/photo-1634973357973-f2ed2657db3c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8b25saW5lJTIwc3RvcmV8ZW58MHx8MHx8&w=1000&q=80";*/
+/*@keyframes background {
+    from {
+        background-position: 0 0%;
+    }
+
+    to {
+        background-position: 0 -200px;
+    }
+}
+
+.brand-logo {
+    color: #F2F5FE;
+    text-align: center;
+    font-size: 200px;
+    line-height: 1;
+    font-family: 'Rajdhani', sans-serif;
+    background: -webkit-linear-gradient(transparent, transparent), url(http://html5book.ru/wp-content/uploads/2016/08/bubbles.png) repeat;*/
+/* background-size: 200px auto;
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;*/
+/*animation: background 10s infinite linear;
+}*/
+/*
+.text-container > span {
+    text-transform: uppercase;
+    animation: glow 2s ease-in-out infinite;
+}
+
+@keyframes glow {
+    0%, 100% {
+        color: $color-ac;
+        text-shadow: 0 0 10px $color-ac, 0 0 50px $color-ac, 0 0 100px $color-ac;
+    }
+
+    10%, 90% {
+        color: white;
+        text-shadow: none;
+    }
+}
+
+.text-container > span:nth-child(2) {
+    animation-delay: 0.25s;
+}
+
+.text-container > span:nth-child(3) {
+    animation-delay: 0.5s;
+}
+
+.text-container > span:nth-child(4) {
+    animation-delay: 0.75s;
+}
+
+.text-container > span:nth-child(5) {
+    animation-delay: 1s;
+}
+
+.text-container > span:nth-child(6) {
+    animation-delay: 1.25s;
+}
+
+.text-container > span:nth-child(7) {
+    animation-delay: 1.5s;
+}*/
+@import url("https://fonts.googleapis.com/css?family=Luckiest+Guy");
+h1 {
+  cursor: default;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100px;
+  margin: auto;
+  display: block;
+  text-align: center;
+}
+
+#BrandCard .container {
+  /* background-image: url("https://clipground.com/images/pattern-png-transparent-4.png");
+   background-size: cover;
+   background-repeat: no-repeat;*/
+}
+
+.hover-1 img {
+  width: 105% !important;
+  position: absolute;
+  Top: 0 !important;
+  transition: all 0.4s;
+  object-fit: contain;
+}
+
+.hover-1-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 99;
+  transition: all 0.4s;
+}
+
+.hover-1-description {
+  transform: translateY(20px);
+  transition: all 0.4s;
+  opacity: 0;
+}
+
+.hover-1:hover .hover-1-content {
+  bottom: 28px;
+}
+.hover-1:hover .hover-1-description {
+  opacity: 1;
+}
+.hover-1:hover img {
+  Top: -25% !important;
+}
+.hover-1:hover .hover-overlay {
+  background: rgba(0, 0, 0, 0.79);
+}
+
+.hover {
+  overflow: hidden;
+  position: relative;
+  padding-bottom: 60%;
+}
+
+.hover-overlay {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 90;
+  transition: all 0.4s;
+  opacity: 90;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.hover-content {
+  position: relative;
+  z-index: 99;
+}
+
+.masthead {
+  text-align: center;
+  height: 100vh;
+  color: #fff;
+  width: 100%;
+  background-image: url("https://img.freepik.com/premium-vector/street-clothing-market-illustration_88272-2106.jpg?w=2000");
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+  background-position: center center;
+  background-size: cover;
+}
+.masthead .masthead-container {
+  height: 100%;
+  /* display: flow-root; */
+  text-align: center;
+  /*width: 100%;*/
+  /* display: flex; */
+  background: linear-gradient(0deg, rgba(0, 150, 136, 0) 0%, rgb(0, 150, 136) 100%);
+  /*margin-left: 50%;*/
+}
+.masthead .masthead-subheading {
+  font-size: 1.5rem;
+  font-style: italic;
+  position: relative;
+  top: 40%;
+  line-height: 1.5rem;
+  margin-bottom: 25px;
+  font-family: "Roboto Slab", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+.masthead .masthead-heading {
+  font-size: 3.25rem;
+  font-weight: 700;
+  position: relative;
+  top: 20%;
+  line-height: 3.25rem;
+  margin-bottom: 2rem;
+  font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+.masthead .masthead-heading span {
+  /*            text-shadow: 1px 1px 1px red;*/
+  font-family: "Bebas Neue";
+  /*background-color: orange;*/
+  color: orange;
+}
+.masthead .btn-xl {
+  padding: 1.25rem 2.5rem;
+  font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-size: 1.125rem;
+  font-weight: 700;
+  position: relative;
+  top: 30%;
+  background-color: #ffa000;
+  border: none;
+  color: white;
+}
+.masthead .btn-xl:hover {
+  background-color: #ff7c00 !important;
+  border: none;
+  box-shadow: none;
+  color: white;
+}

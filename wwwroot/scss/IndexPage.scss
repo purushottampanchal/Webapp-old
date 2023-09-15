@@ -1,0 +1,41 @@
+﻿
+
+.cover {
+    overflow: hidden;
+    position: relative;
+    height: 90vh;
+
+    img {
+        vertical-align: middle;
+        background-size: cover;
+        width: 100%;
+    }
+
+    .cover-overlay {
+        position: absolute;
+        top: 0;
+        height: 90vh;
+        left: 0;
+        background-color: #00339abe;
+        z-index: 9;
+
+
+        .content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(100%,-50%);
+            text-align: center;
+            padding: 0 40px;
+
+            h1 {
+                font-size: 70px;
+                font-weight: bold;
+                color: #e0e0e0;
+                text-transform: uppercase;
+                margin-bottom: 40px;
+            }
+        }
+    }
+}
+

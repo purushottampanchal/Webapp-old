@@ -1,0 +1,112 @@
+﻿@model WebApp.Models.Cart.CartModel;
+
+@{
+    ViewData["Title"] = "Cart";
+}
+
+@if (ViewData["EmptyCartMessage"] != null || Model.CartItems.Count() == 0)
+{
+
+    @Html.Partial("_EmptyCart")
+
+}
+else
+{
+@*
+    @if (TempData["ErrorMessage"] != null)
+    {
+
+        <div class="alert alert-danger" role="alert">
+
+            Error: @TempData["ErrorMessage"]
+
+        </div>
+
+    }*@
+
+
+    @using (Html.BeginForm())
+    {
+
+         <div class="container d-flex justify-content-end m-2 mt-5 pt-2" >
+
+            <input type="submit" value="Place Order" class="btn  btn-lg btn-dark" >
+
+            <a class="btn btn-lg btn-danger" asp-action="EmptyCart" asp-controller="Catalog">
+
+                Clear Cart
+
+            </a>
+
+        </div>
+
+
+        <table class="container bg-light table" style="">
+            <thead>
+                <tr>
+                    @* <th>
+                        Item Id
+                        </th>*@
+                    <th>
+                        Image
+                    </th>
+                    <th>
+                        Item name
+                    </th>
+
+
+
+                    <th>Cost</th>
+                    <th> Qty</th>
+                    <th>Total </th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @{
+                    int i = 0;
+                    @foreach (var item in Model.CartItems.ToList())
+                    {
+                        <tr>
+                            <input type="hidden" asp-for="@Model.CartItems[i].itemId" value="@item.itemId" />
+
+
+                            <td>
+                                <img src="@item.ImgUrl" height="100px" width="100px">
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => modelItem.CartItems[i].name)
+                            </td>
+
+                            <td>
+                                @item.ItemCost
+                            </td>
+                            <td>
+                                @item.qty
+                                <input type="hidden" asp-for="@Model.CartItems[i].qty" value="@item.qty" />
+
+                            </td>
+
+                            <td>
+                                @item.TotalCost
+                            </td>
+                        </tr>
+
+                        i++;
+                    }
+                }
+
+            </tbody>
+        </table>
+
+
+
+       
+    }
+}
+
+
+    }
+
+

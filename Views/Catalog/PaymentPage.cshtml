@@ -1,0 +1,228 @@
+﻿@{
+    ViewData["Title"] = "Checkout";
+}
+@using WebApp.Models.Order;
+@model PaymentModel;
+
+<style>
+
+
+    body {
+        background-color: #212529 !important;
+    }
+
+    .dark {
+        background-color: #212529 !important;
+    }
+
+
+    .row > * {
+        padding-right: 0 !important;
+        padding-left: 0 !important;
+        margin-top: var(--bs-gutter-y);
+    }
+
+</style>
+
+<link rel="stylesheet" href="~/scss/checkoutPage.css" />
+
+<div class="m-5 pt-4">
+    <div class="row justify-content-center" style="
+    min-height: 290px;
+">
+        <div class="col-6">
+            <div class="card" style="border: none !important;">
+                <div class="card-header" style="background-color: #009688 !important">
+                    <h5 class="card-title text-light">Payments</h5>
+                    <ul class="nav nav-tabs card-header-tabs" data-bs-tabs="tabs">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="true" data-bs-toggle="tab" href="#card">Card</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="tab" href="#upi">UPI</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="tab" href="#cod">Cash on delivery</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body tab-content">
+                    <div class="tab-pane active" id="card">
+                        <div class="row no-gutter address-container">
+
+                            @for (int i = 0; i < Model.cards.Count; i++)
+                            {
+                                <div class="col-5 card m-1 ">
+                                    <div class="card-header d-flex justify-content-between align-items-center">
+                                        <h5>Card @(i+1)</h5>
+                                        <input type="button" class="btn btn-primary btn-use-card" data="@i" value="Use this card" />
+                                    </div>
+                                    <div class="card-body">
+                                        <span id="card-@i" class="card-title">
+                                            Card No:  <span id="card-no-@i"> @Model.cards[i].CardNo </span> <br>
+                                            Card Owner:  <span id="card-name-@i"> @Model.cards[i].NameOnCard </span><br>
+                                            Cvv: <span id="card-cvv-@i"> @Model.cards[i].CVV </span> <br>
+                                            Expiration:  <span id="card-exp-@i"> @Model.cards[i].Expiration </span>
+                                        </span>
+                                    </div>
+                                </div>
+
+                            }
+
+
+                        </div>
+
+                        <h3>Card Details</h3>
+                        <div class="col-11">
+
+                            @using (Html.BeginForm("MakePayment", "Catalog"))
+                            {
+
+                                @*  <div class="card w-50 card-credit p-3 mt-2">
+
+                                    <div class="px-2 number mt-3 d-flex">
+                                    Card Number
+                                    <input type="text" id="cardNo" required maxlength="19" class="card-input mb-3 form-control" placeholder="xxxx xxxx xxxx" />
+
+                                    Card Holder
+                                    <input type="text" id="cardName" required class="card-input form-control" placeholder="Name on Card" />
+                                    </div>
+                                    <div class="p-4 card-border mt-4">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                    <span class="expires">Cvv</span>
+                                    <span class="expires">Expires</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                    <span class="name">
+
+                                    <input type="text" id="cardCvv" required maxlength="3" class="card-input form-control" placeholder="Cvv" />
+
+                                    </span>
+                                    <span class="date">
+                                    <input type="text" id="Expiration" required maxlength="5" class="card-input form-control" placeholder="MM/YY" />
+
+                                    </span>
+                                    </div>
+                                    </div>
+                                    </div>*@
+
+                                <div class="input-group mb-3">
+                                    <label class="input-group-text" for="CardNo">Card Number</label>
+                                    <input type="text" maxlength="19" required id="cardNo" name="CardNo" class="form-control" placeholder="xxxx xxxx xxxx">
+                                </div>
+
+                                <div class="input-group mb-3">
+                                    <label class="input-group-text" for="NameOnCard">Name on Card</label>
+                                    <input type="text" required id="cardName" name="NameOnCard" class="form-control" placeholder="Alice Bob">
+                                </div>
+
+                                <div class="row g-0 w-100 justify-content-between p-0" style="margin-left: 0px !important; margin-right: 0px !important;">
+                                    <div class="col-5">
+                                        <div class="input-group mb-3">
+                                            <label class="input-group-text" for="cvv">Cvv</label>
+                                            <input type="text" id="cardCvv" required maxlength="3" name="cvv" class="form-control" placeholder="xxx">
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="input-group mb-3">
+                                            <label class="input-group-text" for="Expiration">Expiration</label>
+                                            <input type="text" id="Expiration" required maxlength="5" name="Expiration" class="form-control" placeholder="mm/yy">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @*<a asp-action="MakePayment">*@
+                                <input class="btn btn-primary mt-2 w-100" type="submit" value="Pay" />
+
+                                @*</a>*@
+
+                            }
+                        </div>
+
+
+                    </div>
+
+
+
+                    <div class="tab-pane" id="upi">
+                        @using (Html.BeginForm("MakePaymentUPI", "Catalog"))
+                        {
+
+                            <div class="input-group mb-3">
+                                <span class="input-group-text"><i class="fab fa-google-pay"></i></span>
+                                <input type="text" required id="upi" class="form-control" placeholder="upi@bank">
+
+                                <input class="btn btn-primary mt-2 w-100" type="submit" value="Pay" />
+
+                            </div>
+                        }
+                    </div>
+
+                    <div class="tab-pane" id="cod">
+                        <p>
+
+                            <a class="btn btn-primary w-50" asp-action="MakePaymentCod"> Pay On delivery </a>
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+<script>
+
+    $('#cardNo').on('keydown', function() {
+        var text = $(this).val().split(" ").join("");
+        if (text.length > 0) {
+            text = text.match(new RegExp('.{1,4}', 'g')).join(" ");
+        }
+        $(this).val(text);
+    });
+
+    $('#Expiration').on('keydown', function() {
+        var text = $(this).val().split("/").join("");
+        if (text.length > 0) {
+            text = text.match(new RegExp('.{1,2}', 'g')).join("/");
+        }
+        $(this).val(text);
+    });
+
+    $(function(){
+        $(".btn-use-card").click(function(fe){
+
+            var id = $(this).attr("data");
+
+            var card = $(id).text();
+
+            console.log(id)
+
+            var exp = $("#card-exp-"+id).text();
+            var cvv = $("#card-cvv-"+id).text();
+            var name = $("#card-name-"+id).text();
+            var cardNo = $("#card-no-"+id).text();
+
+            console.log("c"+cardNo)
+
+            $("#cardNo").val(cardNo);
+            $("#cardName").val(name);
+            $("#cardCvv").val(cvv);
+            $("#Expiration").val(exp);
+
+        });
+
+    });
+
+
+</script>

@@ -1,0 +1,257 @@
+﻿@using Microsoft.AspNetCore.Http
+@using WebApp.Models.General
+
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@model WebApp.Models.CompositIndexModel;
+
+<style>
+
+    body {
+        background-color: #212529 !important;
+        background-image: none !important;
+    }
+</style>
+
+
+<div class="container mt-5">
+
+ @*   @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-primary" role="alert">
+
+            Message: @TempData["Message"]
+
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger" role="alert">
+
+            Message: @TempData["ErrorMessage"]
+
+        </div>
+    }
+*@
+
+    <div class="d-flex pt-5 justify-content-between">
+        <h5 class="text-light">
+
+            Welcome <b>
+
+                @HttpContextAccessor.HttpContext.Session.GetString("CurrentUser")
+            </b>
+
+        </h5>
+        <div class="mt">
+
+            <a asp-action="ViewAllOrders" class="btn btn-outline-primary"> View Orders</a>
+            <a value="Add Item" asp-action="AddItem" class="btn btn-outline-primary"> Add Item </a>
+            <a class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#brandModel"> Add Brand </a>
+            <a class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#catalogModel"> Add Catalog </a>
+
+
+        </div>
+    </div>
+
+    @*
+        <br />
+        <a class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#DeletebrandModel"> Delete Brand </a>
+        <a class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#DeletecatalogModel"> Delete Catalog </a>
+    *@
+
+    <table style="vertical-align: middle;" class="table text-center table-dark ">
+        <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Image</th>
+                <th scope="col">Name</th>
+                <th scope="col">Brand</th>
+                <th scope="col">Catalog</th>
+                <th scope="col">Cost</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (CatalogItem item in Model.ItemsList)
+            {
+                <tr>
+
+                    <td>@item.Id</td>
+                    <td><img src="@item.ImageUrl" height="100" width="100"></td>
+                    <td> @item.Name </td>
+
+                    @if (@Model.BrandsList.Where(x => x.Id == item.BrandId).FirstOrDefault() != null)
+                    {
+                        <td>
+                            @Model.BrandsList.Where(x => x.Id == item.BrandId).FirstOrDefault().Name
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                            "none"
+                        </td>
+                    }
+
+
+                    @if (@Model.CatalogsList.Where(x => x.Id == item.CatlogId).FirstOrDefault() != null)
+                    {
+                        <td>
+                            @Model.CatalogsList.Where(x => x.Id == item.CatlogId).FirstOrDefault().Name
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                            "none"
+                        </td>
+                    }
+
+                    <td>@item.Cost</td>
+                    <td>
+
+                        <a asp-action="ViewItem" asp-route-id="@item.Id" class="btn-primary btn">
+                            View
+
+                        </a>
+                        <a asp-action="EditItem" asp-route-id="@item.Id" class="btn-warning btn">
+                            Edit
+
+                        </a>
+
+                        <a data-bs-toggle="modal" data-bs-target="#ConfirmDelete-@item.Id" class="btn-danger btn">
+                            Delete
+
+                        </a>
+
+
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+
+
+    @foreach (var item in Model.ItemsList)
+    {
+        <div class="modal fade" id="ConfirmDelete-@item.Id" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            Confirm Delete
+                        </h5>
+                        <input type="button" class="btn-close" data-bs-dismiss="modal" />
+                    </div>
+                    <div class="modal-footer justify-content-start">
+
+
+                        <a asp-action="DeleteItem" asp-route-id="@item.Id" class="btn-danger btn">
+                            Delete @item.Id
+
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+
+    <div class="modal fade" id="brandModel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add brand</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                @using (Html.BeginForm("AddBrand", "Admin", FormMethod.Post))
+                {
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="recipient-name" class="col-form-label">Brand Name</label>
+                            <input type="text" name="brand" class="form-control required has-errors" id="brand-name">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <input type="submit" class="btn btn-primary" value="Add Brand">
+
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="catalogModel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">New Catalog type</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                @using (Html.BeginForm("AddCatalog", "Admin", FormMethod.Post))
+                {
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="recipient-name" class="col-form-label">Catalog Name</label>
+                            <input type="text" name="catalog" class="form-control required has-errors" id="brand-name">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <input type="submit" class="btn btn-primary" value="Add Catalog Type">
+
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+
+
+<script>
+
+    //    function OrderBy(a,b,n) {
+    //    if (n) return a-b;
+    //    if (a < b) return -1;
+    //    if (a > b) return 1;
+    //    return 0;
+    //}
+
+    //    $('th').click(function() {
+    //    var $th = $(this).closest('th');
+    //    $th.toggleClass('selected');
+    //    var isSelected = $th.hasClass('selected');
+    //    var isInput= $th.hasClass('input');
+    //    var column = $th.index();
+    //    var $table = $th.closest('table');
+    //    var isNum= $table.find('tbody > tr').children('td').eq(column).hasClass('num');
+    //    var rows = $table.find('tbody > tr').get();
+    //    rows.sort(function(rowA,rowB) {
+    //        if (isInput) {
+    //            var keyA = $(rowA).children('td').eq(column).children('input').val().toUpperCase();
+    //            var keyB = $(rowB).children('td').eq(column).children('input').val().toUpperCase();
+    //        } else {
+    //            var keyA = $(rowA).children('td').eq(column).text().toUpperCase();
+    //            var keyB = $(rowB).children('td').eq(column).text().toUpperCase();
+    //        }
+    //        if (isSelected) return OrderBy(keyA,keyB,isNum);
+    //        return OrderBy(keyB,keyA,isNum);
+    //    });
+    //    $.each(rows, function(index,row) {
+    //        $table.children('tbody').append(row);
+    //    });
+    //    return false;
+    //});
+
+
+
+</script>

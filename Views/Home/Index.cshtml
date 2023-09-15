@@ -1,0 +1,105 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@model CompositIndexModel;
+
+@{
+    ViewData["Title"] = "Welcome to shopping App";
+
+}
+
+<link rel="stylesheet" href="~/scss/IndexMain.css" />
+
+
+<style>
+
+    .bg-img {
+        height: 100%;
+        width: 100%;
+        background: linear-gradient(180deg, #b2dfdb00 0%, rgba(0,150,136,1) 100%);
+        background-image: url("https://www.seasonaledge.com/wp-content/uploads/2017/10/Footer-Divider.png");
+    }
+
+</style>
+
+
+<header class="masthead">
+    <div class="masthead-container" style=" ">
+        <div class="masthead-subheading">It's Nice to Meet You!</div>
+        <div class="masthead-heading">
+            Welcome to <span class=""> eShop.com</span>!
+
+        </div>
+        <a class="btn btn-xl text-uppercase " href="#TypeCard">Browse Store</a>
+    </div>
+</header>
+
+<div id="TypeCard"></div>
+
+<section class="page-section mt-5 mb-5" id="BrandCard">
+    <div class="container pt-5 pb-5 bg-light">
+        <div class="text-center">
+            <h2 class="section-heading ">Browse Through Catalog</h2>
+            <h3 class="section-subheading text-muted">Some of from our available catlogs.</h3>
+        </div>
+        <div class="row">
+
+            @for (int i = 0; i < 3; i++)
+            {
+                <div class="col-4 mt-4">
+                    @*<a href="
+
+                    /Items/brand/all/type/@Model.CatalogsList[i].Id">*@
+                    <a href="@Url.Action("ItemsByItemType", "Catalog", new {itemTypeId = Model.BrandsList[i].Id})">
+
+                        <div class="hover-1 hover text-white rounded">
+                            <img src="@Model.CatalogsList[i].CatalogCover" alt="@Model.CatalogsList[i].Name" />
+                            <div class="hover-overlay"></div>
+                            <div class="hover-1-content px-5 py-4">
+
+                                <h3 class="hover-1-description font-weight-light mb-0">
+                                    @Model.CatalogsList[i].Name
+                                </h3>
+                            </div>
+                        </div>
+
+                    </a>
+                </div>
+            }
+
+        </div>
+    </div>
+</section>
+
+
+<section class="page-section mt-5 mb-5" id="BrandCard">
+    <div class="container pt-5 pb-5 bg-light">
+        <div class="text-center">
+            <h2 class="section-heading ">Browse Through Brands</h2>
+            <h3 class="section-subheading text-muted">Some of from our available brands.</h3>
+        </div>
+        <div class="row">
+
+            @for (int i = 0; i < 3; i++)
+            {
+                <div class="col-4 mt-4">
+                    @*<a href="http://localhost:5098/Items/brand/@Model.BrandsList[i].Id/type/all">*@
+                    <a href="@Url.Action("ItemsByBrand", "Catalog", new {itemBrandId = Model.BrandsList[i].Id})">
+
+                        <div class="hover-1 hover text-white rounded">
+                            <img src="@Model.BrandsList[i].BrandCover" alt="@Model.BrandsList[i].Name" />
+                            <div class="hover-overlay"></div>
+                            <div class="hover-1-content px-5 py-4">
+
+                                <h3 class="hover-1-description font-weight-light mb-0">
+                                    @Model.BrandsList[i].Name
+                                </h3>
+                            </div>
+                        </div>
+
+                    </a>
+                </div>
+            }
+
+        </div>
+    </div>
+</section>

@@ -1,0 +1,106 @@
+﻿@using WebApp.Models
+@model CompositAddProductModel
+
+<link rel="stylesheet" href="~/scss/SingleProductPage.css" />
+@***
+
+    add product item Page
+
+*@
+
+
+<div style="margin-top: 6rem">
+
+
+@*@if (ViewData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger" style="margin-top: 6rem" role="alert">
+       Error  @ViewData["ErrorMessage"]
+    </div>
+}*@
+    
+@using (Html.BeginForm("AddItem", "Admin", FormMethod.Post))
+{
+
+    <div class="container">
+
+        <div class="row align-items-center row-cols-2 bg-light">
+
+            <div class="col">
+
+                <img id="ItemImage" class="w-100" src="https://via.placeholder.com/900x900?text=%22Copy%20the%20link%20of%20image%20and%20click%20on%20load%20image%22" />
+
+            </div>
+
+            <div class="col">
+
+                 <div class="input-group mb-3">
+                    <span class="input-group-text">Item Name</span>
+                    <input type="text" asp-for="Item.Name" />
+                </div>
+
+                 <div class="input-group mb-3">
+                    <span class="input-group-text">Price (Rs.)</span>
+                    <input type="number" min="0" asp-for="Item.Cost" />
+                </div>
+
+                 <div class="input-group mb-3">
+                    <span class="input-group-text">Brand</span>
+                    <select asp-for="Item.BrandId">
+
+                        @foreach (var b in Model.Brands)
+                        {
+                            <option value="@b.Id"> @b.Name </option>
+                        }
+
+                    </select>
+                </div>
+
+               <div class="input-group mb-3">
+                    <span class="input-group-text">Type</span>
+                    <select asp-for="Item.CatlogId">
+
+                        @foreach (var b in Model.Catalogs)
+                        {
+                            <option value="@b.Id"> @b.Name </option>
+                        }
+
+                        @*<option>Select</option>*@
+
+                    </select>
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Image Link</span>
+                    <input type="text" id="ImageUrl" asp-for="@Model.Item.ImageUrl">
+                    <span class="material-symbols-outlined btn btn-outline-primary" onclick="loadImage();">
+                        download
+                    </span>
+                </div>
+
+                    <input type="submit" value="save" class="btn-success btn w-50" />
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+}
+
+
+
+</div>
+
+<script>
+
+
+    function loadImage(){
+        var src = document.getElementById("ImageUrl").value
+        document.getElementById("ItemImage").src = src
+    }
+
+
+</script>
+

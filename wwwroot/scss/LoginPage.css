@@ -1,0 +1,102 @@
+﻿.cover {
+  /*background-image: url("https://wallpaper.dog/large/10907455.jpg");*/
+  background-image: url("https://img.freepik.com/premium-vector/street-clothing-market-illustration_88272-2106.jpg?w=2000");
+  /*height: 100vh;*/
+  /*padding-top: 12rem;*/
+  padding-bottom: 3rem;
+  margin-bottom: -50px !important;
+}
+.cover .overlauy {
+  padding-top: 4rem;
+  background: linear-gradient(0deg, rgba(0, 150, 136, 0) 0%, rgb(0, 150, 136) 100%);
+}
+
+.wrapper {
+  max-width: 500px;
+  border-radius: 10px;
+  margin: auto;
+  /*margin-top:6rem;*/
+  padding: 30px 40px;
+  background-color: white;
+  box-shadow: 0px 0px 10px #009688;
+  background-image: url("https://www.pinnacleweb.com/assets/services/services-parent.jpg");
+  backdrop-filter: blur(34);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.login-headaing {
+  font-family: "Unica One";
+  font-size: 4.5rem;
+  font-weight: bold;
+  color: #009688;
+}
+
+.login-subheading {
+  font-family: sans-serif;
+}
+
+.control-label {
+  font-weight: bold;
+  color: #009688;
+  margin-top: 5px;
+}
+
+.input-field {
+  border-radius: 5px;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  border: 1px solid #009688;
+  Background: transparent;
+}
+.input-field input {
+  border: none;
+  width: 100%;
+  outline: none;
+  box-shadow: none;
+  width: 100%;
+  background-color: transparent;
+  padding: 0px 2px;
+  color: #000000;
+}
+.input-field:hover {
+  border-color: #009688;
+}
+.input-field:hover .fas {
+  transition-duration: 0.5s;
+  font-weight: 600;
+  color: #009688;
+}
+.input-field:hover material-symbols-outlined {
+  transition-duration: 0.5s;
+  font-weight: 600;
+  color: #009688;
+}
+
+.register-btn {
+  color: #000000;
+  font-weight: bold;
+}
+.register-btn:hover {
+  font-weight: bolder;
+  color: #009688;
+}
+
+.submit-button {
+  width: 100%;
+  border: 2px solid #009688;
+  font-family: "Unica One";
+  transition: border-radius 0.9s, background 0.3s;
+  border-radius: 1px;
+  font-weight: bolder;
+  color: #009688;
+}
+.submit-button:hover {
+  width: 100%;
+  border: 2px solid #009688;
+  background-color: #009688;
+  border-radius: 100px;
+  color: white;
+}

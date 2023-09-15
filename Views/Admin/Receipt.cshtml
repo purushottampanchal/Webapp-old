@@ -1,0 +1,166 @@
+﻿@using WebApp.Models.Order
+@{
+    Layout = null;
+}
+@model ReceiptModel;
+<title>
+    Receipt
+</title>
+
+<style>
+    .container {
+        /* margin-left: 28px;
+                                    margin-right: 28px;*/
+        margin-top: 58px;
+        width: 70%
+    }
+
+    table, thead {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+
+    table {
+        width: 100%;
+        /*min-width: 60%;*/
+        text-align: center;
+    }
+
+    thead {
+        font-weight: bold;
+    }
+
+    .d-flex {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .printIcon {
+        height: 90px;
+        width: 90px;
+    }
+
+    @@media print {
+        .printIcon {
+            display: none;
+        }
+
+        .container {
+            margin-top: 2% !important;
+            width: 90% !important;
+        }
+
+        .PrintHead {
+            display: flex !important;
+            visibility: visible !important;
+        }
+    }
+
+    .PrintHead {
+        display: none;
+        visibility: hidden;
+    }
+
+</style>
+
+<div style="display:flex; justify-content: end; margin-right: 100px">
+
+    <img src="https://freeiconshop.com/wp-content/uploads/edd/print-outline.png"
+         onclick="window.print();" class="printIcon" />
+
+</div>
+
+<div class="Container">
+
+    <h1 class="PrintHead">eShop.com</h1>
+    <h2>Shipping Label</h2>
+
+    <div class="d-flex">
+
+        <p>
+            To, <br />
+            @Model.UserName <br />
+            Phone No. @Model.PhoneNo <br />
+            @Model.Address.Split(',')[0], <br />
+            @Model.Address.Split(',')[1], <br />
+            @Model.Address.Split(',')[2], <br />
+            @Model.Address.Split(',')[3] - @Model.Address.Split(',')[4]  <br />
+
+
+        </p>
+
+        <p style="text-align: end; font-size: 1.4rem;">
+            <b> Order Id  </b>@Model.id<br />
+            <b> Remark </b> @Model.Remark <br />
+        </p>
+
+
+    </div>
+
+    <hr />
+
+    <table>
+
+        <colgroup>
+            <col span="1" style="width: 10%;">
+            <col span="1" style="width: 70%;">
+            <col span="1" style="width: 10%;">
+            <col span="1" style="width: 10%;">
+        </colgroup>
+
+
+        <thead>
+            <tr>
+                <td> # </td>
+                <td> Item Name </td>
+                <td> Item Qty </td>
+                <td> Item Cost </td>
+
+            </tr>
+        </thead>
+
+        <tbody>
+
+
+            @{
+                int i = 0;
+            }
+            @foreach (var item in Model.Orderitems)
+            {
+                <tr>
+                    <td>@(++i)</td>
+                    <td>@item.Name</td>
+                    <td>@item.itemQty</td>
+                    <td>@item.Cost</td>
+
+                </tr>
+            }
+
+            <tr style="border: 1px solid black;">
+                <td> </td>
+                <td> </td>
+                <td style="font-weight:bold"> Total (Rs.) </td>
+                <td style="font-weight:bold"> @Model.TotalCost </td>
+
+            </tr>
+
+
+            <tr style="border: 1px solid black;">
+                <td> </td>
+                <td> </td>
+                <td style="font-weight:bold"> Shipping Charges(Rs.) </td>
+                <td style="font-weight:bold"> @Model.shippingChareges </td>
+
+            </tr>
+            <tr style="border: 1px solid black;">
+                <td> </td>
+                <td> </td>
+                <td style="font-weight:bold"> Order Total(Rs.) </td>
+                <td style="font-weight:bold"> @(Model.TotalCost + Model.shippingChareges) </td>
+
+            </tr>
+
+        </tbody>
+    </table>
+
+</div>

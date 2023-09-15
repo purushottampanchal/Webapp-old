@@ -1,0 +1,289 @@
+﻿@using WebApp.Models.General
+@model CompositIndexModel;
+@using Microsoft.AspNetCore.Http;
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor;
+
+@{
+    ViewData["Title"] = "Catalog";
+}
+
+<style>
+
+
+
+
+
+</style>
+
+
+<link rel="stylesheet" href="~/scss/CatlogPage.css" />
+
+<script>
+
+
+    function setUrl(){
+        var type_op =document.getElementById("option_type");
+        var type_id = type_op.options[type_op.selectedIndex].getAttribute("name");
+
+        var brand_op =document.getElementById("option_brand");
+        var brand_id = brand_op.options[brand_op.selectedIndex].getAttribute("name");
+        console.log(brand_id+"--"+type_id);
+
+        var url = "#";
+
+        if(type_id == null && brand_id != null){
+            url = "http://localhost:5098/Items/brand/"+brand_id+"/type/all";
+
+            //url = '@Url.Action("brand", "Items")' + '/'+brand_id+'/type/all'
+            
+
+        }else if(type_id != null && brand_id == null){
+            url = "http://localhost:5098/Items/brand/all/type/"+type_id;
+        }else if(type_id != null && brand_id != null){
+            url = "http://localhost:5098/Items/brand/"+brand_id+"/type/"+type_id;
+        }else{
+            url = "@Url.ActionLink("Index", "Catalog")"
+        }
+
+
+        console.log(url);
+
+        var btn = document.getElementById("btn-apply");
+      //  btn.href = url;
+
+    }
+
+
+</script>
+
+
+
+<p>
+    @*    @if (TempData["msg"] != null)
+        {
+        <div class="alert alert-success" role="alert">
+        message: @TempData["msg"]
+        </div>
+        }*@
+
+    @if (Model == null)
+    {
+    <p>
+        Emptyyyyyyyyyyyyyy
+    </p>
+    }
+    else
+    {
+
+    <div class="container">
+
+
+
+        <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+            <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header">
+                    <div class="rounded bg-primary me-2" alt="..."></div>
+                    <strong class="me-auto">eShop.com</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">
+                    Added to Cart
+                </div>
+            </div>
+        </div>
+
+
+        <div class="filter-container w-100 container">
+            <label> Brands </label>
+            <label> Type </label>
+            <label>  </label>
+            <label>  </label>
+
+            <div class="filter-dropdown">
+
+                <select id="option_brand">
+
+                        @if (String.IsNullOrEmpty(Model.FilterBrandName))
+                        {
+                        <option selected> All </option>
+                        }
+                        else
+                        {
+                        <option name="@Model.FilterBrandId" selected> @Model.FilterBrandName </option>
+                        <option> All </option>
+                        }
+
+                        @foreach (var i in Model.BrandsList)
+                        {
+                        <option name="@i.Id" asp-for="">@i.Name</option>
+                        }
+
+                </select>
+
+            </div>
+            <div class="filter-dropdown">
+
+                <select id="option_type">
+
+                        @if (String.IsNullOrEmpty(Model.FilterTypeName))
+                        {
+
+                        <option selected> All </option>
+                        }
+                        else
+                        {
+                        <option name="@Model.FilterTypeId" selected> @Model.FilterTypeName </option>
+                        <option> All </option>
+
+                        }
+
+                        @foreach (var i in Model.CatalogsList)
+                        {
+                        <option name="@i.Id">@i.Name</option>
+                        }
+
+                </select>
+
+            </div>
+
+
+            <a class="btn-filter-apply" id="btn-apply" onclick="setUrl();">
+                    @*            <a class="btn-filter-apply" id="btn-apply" href="@Url.Action("Catalog", "ApplyFilter", new{})" >
+                    *@
+                <input type="button" value="Apply" />
+
+            </a>
+            <form>
+
+
+                <div class="input-group search-container col-md-4">
+                    <input class="form-control py-2" name="searchString" type="text" placeholder="search">
+                    <span class="input-group-append">
+                        <button class="btn btn-secondary" type="submit">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </span>
+                </div>
+
+
+            </form>
+
+        </div>
+
+            @if (Model.ItemsList.Count == 0)
+            {
+                await Html.RenderPartialAsync("_EmptyCatalogPage");
+            }
+
+
+        <div class="card-group row card-row row-cols-4 g-0">
+
+                @foreach (var m in Model.ItemsList)
+                {
+
+                <div class="col">
+
+                    <a style="text-decoration:none" asp-action="ViewItem" asp-route-id="@m.Id">
+
+                        <div class="product-card">
+                            <div class="product-tumb">
+                                <img src="@m.ImageUrl" alt="">
+                            </div>
+                            <div class="product-details">
+                                <span class="product-catagory">
+                                        @*@Model.CatalogsList.FirstOrDefault(x=>x.Id == m.CatlogId).Name.ToString()*@
+                                </span>
+                                <h4>
+                                        @m.Name
+
+                                </h4>
+                                    @*<p>@m.Description</p>*@
+
+                                <div class="d-flex justify-content-between">
+                                    <div class="product-price">Rs. @m.Cost</div>
+
+                                        @*@if (HttpContextAccessor.HttpContext.Session.GetString("AuthData") != null)*@
+                                        @if (true)
+                                        {
+
+                                        <div value="@m.Id" class="AddToCart">
+                                            <span class="counter-span" id="counter-@m.Id">0</span>
+                                            <span class="icon-span">
+                                                <i class="fa fa-shopping-cart"></i>
+
+                                            </span>
+                                        </div>
+
+                                        }
+
+                                        else
+                                        {
+
+                                        <a asp-action="Login" asp-controller="Home" value="@m.Id" class="">Login</a>
+                                        <span id="counter">1</span>
+
+                                        }
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                }
+
+
+
+        </div>
+
+    </div>
+
+
+    }
+
+
+
+
+
+
+
+
+
+<script>
+
+
+
+    //    function toggleAlert(){
+    //    $(".alert").toggleClass('in out');
+    //    return false;
+    //}
+
+
+    //$("#btn").on("click", toggleAlert);
+    //$('#bsalert').on('close.bs.alert', toggleAlert)
+
+        $(function(){
+
+
+            $(".AddToCart").click(function(fe){
+
+                var id = $(this).attr('value');
+
+                fe.preventDefault();
+                $.post(
+                    "@Url.Action("AddItemToCart","Catalog")",
+                    {
+                        id : $(this).attr('value'),
+
+                        qty : (Number($('#counter-'+id).text())+1)
+                    },
+                    function(data){
+
+                        $('#counter-'+id).text(Number($('#counter-'+id).text())+1);
+                        $('.toast').toast('show');
+                        console.log("----"+data);
+                    });
+                });
+        });
+
+
+</script>

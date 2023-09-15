@@ -1,0 +1,289 @@
+﻿@using Newtonsoft.Json
+@model IEnumerable<WebApp.Models.Order.OrderViewModel>
+
+@{
+    ViewData["Title"] = "ViewAllOrders";
+}
+
+
+<style>
+
+
+
+
+    .modal-dialog {
+        width: 80% !important;
+        margin: auto;
+    }
+
+    body {
+        background-color: #212529 !important;
+        background-image: none !important;
+    }
+</style>
+
+<div class="" style="margin-top:6rem; min-height: 300px">
+
+    <div class="d-flex justify-content-between container w-100">
+
+        <h3 style="color: white">
+            View All orders
+        </h3>
+
+        <div class="filter-dropdown d-flex" style="margin-left: 5rem; margin-bottom: 2rem; width: 40% !important">
+            <div class="input-group mb-3">
+                <label class="input-group-text" for="inputGroupSelect01">Filter Orders</label>
+                <select class="form-select" id="order-filter" name="filter">
+                    <option selected>---select---</option>
+                    <option>All</option>
+                    <option value="Cancelled">Cancelled</option>
+                    <option value="Delivered">Delivered</option>
+                    <option value="Processing">Processing</option>
+                    <option value="Shipped">Shipped</option>
+
+                </select>
+
+                <a class="btn btn-primary" id="btn-apply" onclick="setUrl();"> apply </a>
+            </div>
+        </div>
+    </div>
+
+    <table style="vertical-align: middle;" class="table table-borderless table-dark p-5">
+        <thead style="border-bottom: 1px solid white !important;">
+
+            <tr class="text-center" style="vertical-align: middle;">
+
+                <th>
+                    Order Id
+                </th>
+                @*<th>
+                    @Html.DisplayNameFor(model => model.UserId)
+                    </th>*@
+                <th>
+                    @Html.DisplayNameFor(model => model.UserName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Address)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.UserPhoneNo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TotalCost)
+                </th>
+                <th>
+                    Shipping
+                </th>
+                <th>
+                    Order Total
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.OrderStatus)
+                </th>
+
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody class="text-center">
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    @*<td>
+                        @Html.DisplayFor(modelItem => item.UserId)
+                        </td>*@
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Address)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserPhoneNo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TotalCost)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ShippingChareges)
+                    </td>
+                    <td>
+                        @(item.ShippingChareges + item.TotalCost)
+                    </td>
+                    <td>
+                        @if (item.OrderStatus == "Cancelled")
+                        {
+                            <span class="text-danger text-center ">
+                                @item.OrderStatus
+                            </span>
+                        }
+
+                        else if (item.OrderStatus == "Delivered")
+                        {
+                            <span class="text-success text-center ">
+                                @item.OrderStatus
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="text-primary text-center">
+                                @item.OrderStatus
+                            </span>
+                        }
+                    </td>
+
+                    <td>
+
+                        <a class="btn btn-outline-primary open-detail-dialog" data-id="@item.Id" data-bs-toggle="modal"
+                       data-bs-target="#itemodel-@item.Id"> Details </a>
+
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+
+
+@foreach (var Order in Model)
+{
+
+
+    <div class="modal fade" id="itemodel-@Order.Id" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-fullscreen">
+            <div class="modal-content p-4" style="overflow-y: scroll">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        Remark: @Order.Remark
+                    </h4>
+
+                    <div>
+
+                        @if (Order.OrderStatus == "Cancelled" || Order.OrderStatus == "Delivered")
+                        { }
+                        else
+                        {
+                            <a asp-action="ShipedOrder" asp-route-id="@Order.Id" class="btn btn-success">
+                                Shipped
+                            </a>
+                            <a asp-action="DeliverOrder" asp-route-id="@Order.Id" class="btn btn-success">
+                                Delivered
+                            </a>
+
+                            <a data-bs-toggle="modal" data-bs-target="#ConfirmDelete-@Order.Id" class="btn btn-danger">
+                                Cancel
+                            </a>
+                        }
+
+                        <a asp-action="Receipt" asp-route-id="@Order.Id" target="_blank" class="btn btn-info">
+                            Print Receipt
+                        </a>
+
+                        <input type="button" class="btn-close" data-bs-dismiss="modal" />
+                    </div>
+                </div>
+
+
+
+                <table class="table" style="vertical-align: middle;">
+                    <thead>
+
+                        <tr>
+                            <th>
+                                Image
+                            </th>
+                            <th>Name</th>
+                            <th>Cost</th>
+                            <th>itemQty</th>
+                            <th>Total</th>
+
+                        </tr>
+
+                    </thead>
+                    <tbody>
+
+                        @foreach (var item in Order.OrderItems)
+                        {
+                            <tr>
+
+                                <td>
+                                    <img src="@item.ImageUrl" height="100px" width="100px">
+                                </td>
+                                <td>@item.Name</td>
+                                <td>@item.Cost</td>
+                                <td>@item.itemQty</td>
+                                <td>@(item.itemQty * item.Cost) </td>
+
+                            </tr>
+                        }
+
+
+                    </tbody>
+
+                </table>
+
+
+
+
+
+            </div>
+        </div>
+    </div>
+}
+
+@foreach (var Order in Model)
+{
+    <div class="modal fade" id="ConfirmDelete-@Order.Id" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        Confirm cancel Order id @Order.Id
+                    </h5>
+                    <input type="button" class="btn-close" data-bs-dismiss="modal" />
+                </div>
+                <div class="modal-footer justify-content-start">
+
+
+                    <a asp-action="CancelOrder" asp-route-id="@Order.Id" class="btn btn-danger">
+                        Cancel
+                    </a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+
+
+<script>
+
+
+
+      function setUrl(){
+        var op =document.getElementById("order-filter");
+        var id = op.options[op.selectedIndex].getAttribute("value");
+
+
+        if(id == null){
+            url = "http://localhost:5098/Admin/ViewAllOrders";
+        }else {
+            url = "http://localhost:5098/Admin/ViewAllOrders?filter="+id;
+        }
+
+        console.log(url);
+
+        var btn = document.getElementById("btn-apply");
+        btn.href = url;
+
+    }
+
+
+</script>
+

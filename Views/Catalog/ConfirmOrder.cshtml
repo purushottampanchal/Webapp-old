@@ -1,0 +1,287 @@
+﻿@using Newtonsoft.Json
+@using WebApp.Models.Order
+@model CheckOutModel;
+
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor;
+@using Microsoft.AspNetCore.Http;
+
+<link rel="stylesheet" href="~/scss/ConfirmOrder.css" />
+
+
+<style>
+
+    ::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0);
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        background: #bec4c4;
+    }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+    .img-fluid {
+        height: 100% !important;
+        width: 100%;
+    }
+
+    .w-80 {
+        width: 80% !important;
+    }
+
+    .item-container {
+        height: 550px;
+    }
+
+    .row {
+        margin-left: 10px;
+        margin-right: 10px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
+    .address-container {
+        height: 220px;
+        overflow-x: scroll;
+        scroll-behavior: smooth;
+        scroll-margin-block: 0 5px;
+        overflow-y: visible;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
+
+</style>
+
+@*
+    @if (TempData["ErrorMessage"] != null)
+    {
+    <div class="alert alert-danger" role="alert">
+    Error : @TempData["ErrorMessage"]
+    </div>
+    }
+    @if (TempData["msg"] != null)
+    {
+    <div class="alert alert-primary" role="alert">
+    Error : @TempData["msg"]
+    </div>
+    }
+*@
+
+<div class="row pt-4 align-items-start">
+
+    <div class="col-6">
+
+        <div class="h-100 item-container">
+            <h3>
+                Items
+            </h3>
+            <div style="height: 100vh; overflow-y: scroll;">
+
+                @for (int i = 0; i < Model.confirmOrderModel.Items.Count; i++)
+                {
+
+                    <div class="bg-light w-100" style="">
+                        <div class="row ">
+                            <div class="col-2">
+                                <img src="@Model.confirmOrderModel.Items[i].ImgUrl" height="100" width="100">
+                            </div>
+
+                            <div class="col-6">
+                                <div class="card-body">
+                                    <a style="text-decoration:none" href="@Url.Action("Viewitem", "Catalog", new {id = Model.confirmOrderModel.Items[i].itemId})">
+
+                                     
+
+                                        <h4 class="card-title text-primary">@Model.confirmOrderModel.Items[i].name</h4>
+                                    </a>
+                                    <p class="card-text">
+                                        <small class="text-muted">
+                                            @Model.confirmOrderModel.brands.Where(x => x.Id == Model.confirmOrderModel.Items[i].BrandId).FirstOrDefault().Name
+                                            |
+                                            @Model.confirmOrderModel.Types.Where(x => x.Id == Model.confirmOrderModel.Items[i].TypeId).FirstOrDefault().Name
+                                        </small>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="card-body">
+                                    <h5 class="card-title text-primary">Cost</h5>
+                                    <p class="card-text">
+                                        Rs. @Model.confirmOrderModel.Items[i].ItemCost
+                                    </p>
+                                    <p class="card-text">
+                                        Qty. @Model.confirmOrderModel.Items[i].qty
+                                    </p>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-6">
+
+        <h3>Billing Address</h3>
+        <h5>Saved Addresses</h5>
+        @if (Model.addresses.Count == 0)
+        {
+            <h6 class="m-1">No saved address</h6>
+        }
+        else
+        {
+            <div class="address-container">
+
+                @for (int i = 0; i < Model.addresses.Count; i++)
+                {
+                    <div class="card mt-3" style="width: 40%; height: 80%;">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5>Address @(i+1)</h5>
+                            <input type="button" class="btn btn-primary btn-use-address" data="#address-@i" value="Deliver here" />
+                        </div>
+                        <div class="card-body" style="text-align: center">
+                            <span id="address-@i" class="card-title">
+
+                                @Model.addresses[i].HouseNo,
+                                @Model.addresses[i].StreetArea,
+                                @Model.addresses[i].City,
+                                @Model.addresses[i].Pincode,
+                                @Model.addresses[i].State
+                            </span>
+                        </div>
+                    </div>
+
+
+                }
+
+            </div>
+        }
+        <form>
+
+
+
+            <h5>New Address</h5>
+
+            <div class="input-group mb-3">
+                <span class="input-group-text"><i class="fas fa-home"></i></span>
+                <input type="text" required id="houseNo" class="form-control" asp-for="DelivaryAddresses.HouseNo" placeholder="House No">
+            </div>
+
+            <div class="input-group mb-3">
+                <span class="input-group-text"> <i class="fas fa-archway"></i></span>
+                <input type="text" required id="street" class="form-control" asp-for="DelivaryAddresses.StreetArea" placeholder="Street/area Name">
+            </div>
+
+            <div class="row g-0 p-0 justify-content-between" style="margin-left: 0px !important; margin-right: 0px !important;">
+                <div class="col-6">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text"><i class="fas fa-city"></i></span>
+                        <input type="text" required id="city" class="form-control" asp-for="DelivaryAddresses.City" placeholder="City">
+                    </div>
+                </div>
+                <div class="col-5">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text"> <i class="fas fa-map-pin"></i></span>
+                        <input type="text" id="pin" required class="form-control" asp-for="DelivaryAddresses.Pincode" placeholder="Zip Code" pattern="[0-9]{6}" maxlength="6">
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-group mb-3">
+                <span class="input-group-text">
+                    State
+                </span>
+                <select class="form-select" asp-for="DelivaryAddresses.State" id="stateSelect">
+                    <option value="Maharashtra" selected>Maharashtra</option>
+                    <option value="Goa">Goa</option>
+                    <option value="Madhya Pradesh">Madhya Pradesh</option>
+                    <option value="Gujrat">Gujrat</option>
+                </select>
+            </div>
+
+            @*  <div class="input-group mb-3">
+                <label class="input-group-text" for="selectPayment">select Payment</label>
+                <select class="form-select" asp-for="Payment" id="selectPayment">
+                <option value="Cod" selected>Cash On Delivary</option>
+                <option value="Online">Pay Online</option>
+
+                </select>
+                </div>
+            *@
+
+
+            @*<input type="submit" asp-action="PutOrder" id="submitForm" value="Put Order" class="btn btn-primary w-100" />*@
+
+            <div class="row g-0 justify-content-between">
+
+                <input type="submit" asp-action="PutOnlinePaymentOrder" id="submitForm" value="Pay Onine" class="col-5 btn btn-primary " />
+                <input type="submit" asp-action="PutCodOrder" id="submitForm" value="Cash On delivary" class="col-6 btn btn-primary " />
+
+            </div>
+
+        </form>
+    </div>
+
+</div>
+
+
+
+
+
+<script>
+
+
+    $(function(){
+
+        $("#payOnline").click(function(e){
+    @{
+        HttpContextAccessor.HttpContext.Session.SetString("Order", JsonConvert.SerializeObject(Model));
+    }
+
+            window.location.href = 'https://eshopping.azurewebsites.net/Items/PayForOrder';
+
+        });
+
+        $(".btn-use-address").click(function(fe){
+
+            var id = $(this).attr("data");
+
+            var address = $(id).text();
+
+            //console.log(id)
+            //console.log(address)
+
+            var houseNo = address.split(',')[0].trim();
+            var street = address.split(',')[1].trim();
+            var city = address.split(',')[2].trim();
+            var pin = (address.split(',')[3]).trim();
+
+            var state = address.split(',')[4].trim();
+
+            //$("#city").attr("value", city);
+            $("#city").val(city);
+            $("#pin").val(pin);
+            //$("#houseNo").attr("value", houseNo);
+            $("#houseNo").val(houseNo);
+            $("#street").attr("value", street);
+            $("#stateSelect").val(state.trim());
+
+        });
+
+    });
+
+
+</script>

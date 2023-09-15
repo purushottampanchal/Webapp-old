@@ -1,0 +1,118 @@
+﻿
+$color-accent: #009688;
+$color-dark: #000000;
+$color-light: #dbdbdb;
+$bg-img: "https://img.freepik.com/premium-vector/street-clothing-market-illustration_88272-2106.jpg?w=2000";
+
+.cover {
+    /*background-image: url("https://wallpaper.dog/large/10907455.jpg");*/
+    background-image: url($bg-img);
+    /*height: 100vh;*/
+    /*padding-top: 12rem;*/
+    padding-bottom: 3rem;
+    margin-bottom: -50px !important;
+
+    .overlauy {
+        padding-top: 4rem;
+        background: linear-gradient(0deg, rgba(0,150,136,0) 0%, rgba(0,150,136,1) 100%);
+    }
+}
+
+@mixin icon-style {
+    transition-duration: 0.5s;
+    font-weight: 600;
+    color: $color-accent;
+}
+
+.wrapper {
+    max-width: 500px;
+    border-radius: 10px;
+    margin: auto;
+    /*margin-top:6rem;*/
+    padding: 30px 40px;
+    background-color: white;
+    box-shadow: 0px 0px 10px $color-accent;
+    background-image: url("https://www.pinnacleweb.com/assets/services/services-parent.jpg");
+    backdrop-filter: blur(34);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.login-headaing {
+    font-family: 'Unica One';
+    font-size: 4.5rem;
+    font-weight: bold;
+    color: $color-accent;
+}
+
+.login-subheading {
+    font-family: sans-serif;
+}
+
+    .control-label {
+        font-weight: bold;
+        color: $color-accent;
+        margin-top: 5px;
+    }
+.input-field {
+    border-radius: 5px;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    border: 1px solid $color-accent;
+    Background: transparent;
+
+
+    input {
+        border: none;
+        width: 100%;
+        outline: none;
+        box-shadow: none;
+        width: 100%;
+        background-color: transparent;
+        padding: 0px 2px;
+        color: $color-dark;
+    }
+
+    &:hover {
+        border-color: darken($color-accent, 0%); //todo: find color combination
+        .fas {
+            @include icon-style;
+        }
+
+        material-symbols-outlined {
+
+            @include icon-style;
+        }
+    }
+}
+
+.register-btn {
+    color: $color-dark;
+    font-weight: bold;
+
+    &:hover {
+        font-weight: bolder;
+        color: $color-accent;
+    }
+}
+
+
+.submit-button {
+    width: 100%;
+    border: 2px solid $color-accent;
+    font-family: 'Unica One';
+    transition: border-radius 0.9s, background 0.3s;
+    border-radius: 1px;
+    font-weight: bolder;
+    color: $color-accent;
+
+    &:hover {
+        width: 100%;
+        border: 2px solid $color-accent;
+        background-color: $color-accent;
+        border-radius: 100px;
+        color: white;
+    }
+}

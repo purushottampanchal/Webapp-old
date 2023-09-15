@@ -1,0 +1,65 @@
+﻿@using WebApp.Controllers
+@using System.Text.Json
+@using Microsoft.AspNetCore.Http
+
+@model LoginRequest;
+
+
+<link rel="stylesheet" href="~/scss/LoginPage.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+@*@if (TempData["msg"] != null)
+    {
+    var alertClass = "alert-primary";
+
+
+    <div class="alert @alertClass" role="alert">
+    Message: @TempData["msg"]
+    </div>
+    }*@
+
+<div class="cover">
+
+    <div class="overlauy">
+
+        <div class="wrapper bg-light">
+            <div class="h2 text-center login-headaing">Login</div>
+                        <hr />
+
+            @*<div class="h4 text-muted text-center pt-2 login-subheading">Enter your login details</div>*@
+            @using (Html.BeginForm(FormMethod.Post))
+            {
+                <form class="pt-3">
+                    <div class="form-group py-2">
+                        <div class="input-field">
+                            <span class="fas fa-user p-2"></span>
+                            <input type="text" name="username" required placeholder="Username" required class="" />
+                        </div>
+                    </div>
+                    <div class="form-group py-1 pb-2">
+                        <div class="input-field">
+                            <span class="fas fa-lock p-2"></span>
+                            <input type="password" required name="password" placeholder="Password" required class="" />
+                            @*<input type="hidden" value="User" name="UserRole" />*@
+
+                        </div>
+                    </div>
+
+
+                    <button asp-action="AttemptLogin" asp-controller="Login" class="btn submit-button btn-block text-center my-3">Log in</button>
+
+                </form>
+            }
+            Don't Have account? &nbsp;<a asp-action="RegisterUser" asp-controller="Home" class="register-btn text-center bg-transparent text-center">Create one</a>
+        </div>
+
+
+    </div>
+
+</div>
+
+

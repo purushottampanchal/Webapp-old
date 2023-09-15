@@ -1,0 +1,58 @@
+﻿@using WebApp.Controllers
+@using System.Text.Json
+@using Microsoft.AspNetCore.Http
+
+@model LoginRequest;
+
+
+<link rel="stylesheet" href="~/scss/LoginPage.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
+<style>
+
+
+    .login-headaing {
+        font-family: system-ui !important;
+        font-size: 2.7rem;
+        color: orangered;
+    }
+
+</style>
+
+<body>
+
+    @if (TempData["msg"] != null)
+    {
+        var alertClass = "alert-primary";
+
+
+        <div class="alert @alertClass" role="alert">
+            Error : @TempData["msg"]
+        </div>
+    }
+
+    @using (Html.BeginForm(FormMethod.Post))
+    {
+
+        <div class="wrapper bg-white">
+            <div class="h2 text-center login-headaing">Admin Login</div>
+            <div class="h4 text-muted text-center pt-2 login-subheading">Enter your login details</div>
+            <form class="pt-3">
+                <div class="form-group py-2">
+                    <div class="input-field">
+                        <span class="fas fa-user p-2"></span>
+                        <input type="text" name="username" placeholder="Username" required class="" />
+                    </div>
+                </div>
+                <div class="form-group py-1 pb-2">
+                    <div class="input-field">
+                        <span class="fas fa-lock p-2"></span>
+                        <input type="password" name="password" placeholder="Password" required class="" />
+                        <input type="hidden" value="Admin" name="UserRole" />
+                    </div>
+                </div>
+                <button asp-action="AttemptLogin" asp-controller="Login" class="btn submit-button btn-block text-center my-3">Log in</button>
+            </form>
+        </div>
+
+    }
+</body>

@@ -1,0 +1,19 @@
+﻿.input-group span {
+  background: #009688;
+  width: auto;
+  color: white;
+  border-radius: 0px;
+  border: 1px solid #009688;
+}
+.input-group input, .input-group select {
+  border-radius: 0px;
+  border: 1px solid #009688;
+  padding-left: 5px;
+}
+.input-group input:focus-within, .input-group select:focus-within {
+  border-radius: 0px;
+  outline: 0px solid #009688;
+}
+.input-group input .input-group:focus-within *:focus, .input-group select .input-group:focus-within *:focus {
+  outline: 0;
+}

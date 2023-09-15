@@ -1,0 +1,50 @@
+﻿@using WebApp.Models.General
+@model CatalogItem
+
+@*Admin View Product*@
+
+@{
+    ViewData["Title"] = "Admin product";
+
+}
+
+
+<link rel="stylesheet" href="~/scss/SingleProductPage.css"/>
+
+
+<div class="container" style="margin-top: 6rem;
+    margin-bottom: 6rem;">
+
+    <div class="row align-items-center row-cols-2 bg-light">
+
+        <div class="col">
+
+            <img src="@Model.ImageUrl" class="img-responsive m-4" />
+
+        </div>
+        <div class="col">
+
+            <h1>@Model.Name</h1>
+
+            <h3> <span>Rs.</span> @Model.Cost </h3>
+            
+            <div>
+
+
+                       <a asp-action="EditItem" asp-route-id="@Model.Id" class="btn-warning btn">
+                            Edit
+
+                        </a>
+                        
+                        <a asp-action="DeleteItem" asp-route-id="@Model.Id" class="btn-danger btn">
+                            Delete
+
+                        </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
